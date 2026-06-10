@@ -9,7 +9,7 @@ import { SessionList } from "./resources/sessions/SessionList";
 import { SessionCreate } from "./resources/sessions/SessionCreate";
 import { SessionEdit } from "./resources/sessions/SessionEdit";
 
-import { SpeakerList } from "./resources/speakers/SpeakerList";
+import { SpeakerList } from "./resources/speakers/SpeakersList";
 import { SpeakerCreate } from "./resources/speakers/SpeakerCreate";
 import { SpeakerEdit } from "./resources/speakers/SpeakerEdit";
 
