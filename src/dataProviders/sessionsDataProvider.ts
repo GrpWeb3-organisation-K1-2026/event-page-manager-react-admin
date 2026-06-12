@@ -7,10 +7,6 @@ const base = createBaseDataProvider("sessions");
 export const sessionsDataProvider: DataProvider = {
   ...base,
 
-  /**
-   * Override create to handle the speakerIds array coming from
-   * SpeakersSelectInput (custom field that stores `speakerIds`).
-   */
   create: async (_resource, params) => {
     const { speakerIds, speakers, ...rest } = params.data;
 
@@ -23,9 +19,6 @@ export const sessionsDataProvider: DataProvider = {
     return { data };
   },
 
-  /**
-   * Override update for the same reason — keep speakerIds in sync.
-   */
   update: async (_resource, params) => {
     const { speakerIds, speakers, ...rest } = params.data;
 
