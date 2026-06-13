@@ -1,10 +1,9 @@
 import type { DataProvider } from "react-admin";
-import { eventsDataProvider } from "./eventsDataprovider";
+import { eventsDataProvider } from "./eventsDataProvider";   
 import { sessionsDataProvider } from "./sessionsDataProvider";
 import { speakersDataProvider } from "./speakersDataProvider";
 import { roomsDataProvider } from "./roomsDataProvider";
 import { questionsDataProvider } from "./questionsDataProvider";
-
 
 const providers: Record<string, DataProvider> = {
   events: eventsDataProvider,
@@ -16,9 +15,6 @@ const providers: Record<string, DataProvider> = {
 
 type DataProviderMethod = keyof DataProvider;
 
-/**
- * Root dataProvider — delegates every call to the matching resource provider.
- */
 export const dataProvider = new Proxy({} as DataProvider, {
   get(_, method: string) {
     return (resource: string, params: unknown) => {

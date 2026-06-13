@@ -1,3 +1,3 @@
-import { createBaseDataProvider } from "./baseDataprovider";
+import { createBaseDataProvider } from "./baseDataProvider";
 
 export const roomsDataProvider = createBaseDataProvider("rooms");

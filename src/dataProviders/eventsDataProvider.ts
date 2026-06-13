@@ -1,5 +1,5 @@
 import type { DataProvider } from "react-admin";
-import { createBaseDataProvider } from "./baseDataprovider";
+import { createBaseDataProvider } from "./baseDataProvider"; 
 import { httpClient, buildListQuery, parseTotalCount } from "./httpClient";
 
 const base = createBaseDataProvider("events");

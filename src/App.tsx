@@ -1,5 +1,6 @@
 import { Admin, Resource } from "react-admin";
 import { Layout } from "./Layout";
+import { dataProvider } from "./dataProviders";
 
 import { EventList } from "./resources/events/EventList";
 import { EventCreate } from "./resources/events/EventCreate";
@@ -28,7 +29,8 @@ import { authProvider } from "./authProvider";
 
 export const App = () => (
   <Admin
-  authProvider={authProvider}
+    dataProvider={dataProvider}
+    authProvider={authProvider}
     layout={Layout}
     title="EventSync Admin"
   >

@@ -1,0 +1,16 @@
+{
+  "events": [],
+  "sessions": [],
+  "speakers": [],
+  "rooms": [],
+  "questions": [],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "fullName": "Admin User",
+      "role": "admin"
+    }
+  ]
+}
