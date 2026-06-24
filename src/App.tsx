@@ -1,5 +1,6 @@
 import { Admin, Resource } from "react-admin";
 import { Layout } from "./Layout";
+import { dataProvider } from "./dataProviders";
 
 import { EventList } from "./resources/events/EventList";
 import { EventCreate } from "./resources/events/EventCreate";
@@ -9,7 +10,7 @@ import { SessionList } from "./resources/sessions/SessionList";
 import { SessionCreate } from "./resources/sessions/SessionCreate";
 import { SessionEdit } from "./resources/sessions/SessionEdit";
 
-import { SpeakerList } from "./resources/speakers/SpeakerList";
+import { SpeakerList } from "./resources/speakers/SpeakersList";
 import { SpeakerCreate } from "./resources/speakers/SpeakerCreate";
 import { SpeakerEdit } from "./resources/speakers/SpeakerEdit";
 
@@ -24,9 +25,12 @@ import GroupIcon from "@mui/icons-material/Group";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import VideoLabelIcon from "@mui/icons-material/VideoLabel";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import { authProvider } from "./authProvider";
 
 export const App = () => (
   <Admin
+    dataProvider={dataProvider}
+    authProvider={authProvider}
     layout={Layout}
     title="EventSync Admin"
   >
