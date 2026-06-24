@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  fullName  String?
+  avatar    String?
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  place       String
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  sessions    Session[]
+
+  @@map("events")
+}
+
+
+model Room {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  sessions  Session[]
+
+  @@map("rooms")
+}
+
+
+model Speaker {
+  id        Int              @id @default(autoincrement())
+  fullName  String
+  biography String
+  photo     String?
+  links     Json             @default("{}")
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  sessions  SessionSpeaker[]
+
+  @@map("speakers")
+}
+
+
+model Session {
+  id          Int              @id @default(autoincrement())
+  title       String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  capacity    Int
+
+  eventId     Int
+  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  roomId      Int
+  room        Room             @relation(fields: [roomId], references: [id])
+
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  speakers    SessionSpeaker[]
+  questions   Question[]
+
+  @@map("sessions")
+}
+
+
+model SessionSpeaker {
+  sessionId   Int
+  speakerId   Int
+
+  session     Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  speaker     Speaker  @relation(fields: [speakerId], references: [id], onDelete: Cascade)
+
+  @@id([sessionId, speakerId])
+  @@map("session_speakers")
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  content   String
+  name      String?
+  upvotes   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  sessionId Int
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+}
