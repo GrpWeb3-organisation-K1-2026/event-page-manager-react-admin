@@ -15,8 +15,8 @@ export const sessionsDataProvider: DataProvider = {
       speakerIds: speakerIds ?? [],
     };
 
-    const { data } = await httpClient.post("/sessions", payload);
-    return { data };
+    const { data: body } = await httpClient.post("/sessions", payload);
+    return { data: body?.data ?? body };
   },
 
   update: async (_resource, params) => {
@@ -27,10 +27,10 @@ export const sessionsDataProvider: DataProvider = {
       speakerIds: speakerIds ?? [],
     };
 
-    const { data } = await httpClient.put(
+    const { data: body } = await httpClient.patch(
       `/sessions/${params.id}`,
       payload
     );
-    return { data };
+    return { data: body?.data ?? body };
   },
 };

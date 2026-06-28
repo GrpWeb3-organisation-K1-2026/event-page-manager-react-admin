@@ -12,8 +12,8 @@ export const speakersDataProvider: DataProvider = {
       ...params.data,
       links: params.data.links ?? {},
     };
-    const { data } = await httpClient.post("/speakers", payload);
-    return { data };
+    const { data: body } = await httpClient.post("/speakers", payload);
+    return { data: body?.data ?? body };
   },
 
   update: async (_resource, params) => {
@@ -21,10 +21,10 @@ export const speakersDataProvider: DataProvider = {
       ...params.data,
       links: params.data.links ?? {},
     };
-    const { data } = await httpClient.put(
+    const { data: body } = await httpClient.patch(
       `/speakers/${params.id}`,
       payload
     );
-    return { data };
+    return { data: body?.data ?? body };
   },
 };

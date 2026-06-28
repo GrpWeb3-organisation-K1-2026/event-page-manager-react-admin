@@ -9,22 +9,25 @@ import {
 export const createBaseDataProvider = (resource: string): DataProvider => ({
   getList: async (_resource, params) => {
     const query = buildListQuery(params.pagination, params.sort, params.filter);
-    const { data, headers } = await httpClient.get(`/${resource}`, {
+    const { data: body, headers } = await httpClient.get(`/${resource}`, {
       params: query,
     });
-    return { data, total: parseTotalCount(headers) };
+    const list = Array.isArray(body) ? body : (body.data ?? body);
+    return { data: list, total: parseTotalCount(headers) };
   },
 
   getOne: async (_resource, params) => {
-    const { data } = await httpClient.get(`/${resource}/${params.id}`);
-    return { data };
+    const { data: body } = await httpClient.get(`/${resource}/${params.id}`);
+    const record = body?.data ?? body;
+    return { data: record };
   },
 
   getMany: async (_resource, params) => {
-    const { data } = await httpClient.get(
+    const { data: body } = await httpClient.get(
       `/${resource}?${buildIdsQuery(params.ids)}`
     );
-    return { data };
+    const list = Array.isArray(body) ? body : (body.data ?? body);
+    return { data: list };
   },
 
   getManyReference: async (_resource, params) => {
@@ -32,37 +35,41 @@ export const createBaseDataProvider = (resource: string): DataProvider => ({
       ...buildListQuery(params.pagination, params.sort, params.filter),
       [params.target]: params.id,
     };
-    const { data, headers } = await httpClient.get(`/${resource}`, {
+    const { data: body, headers } = await httpClient.get(`/${resource}`, {
       params: query,
     });
-    return { data, total: parseTotalCount(headers) };
+    const list = Array.isArray(body) ? body : (body.data ?? body);
+    return { data: list, total: parseTotalCount(headers) };
   },
 
   create: async (_resource, params) => {
-    const { data } = await httpClient.post(`/${resource}`, params.data);
-    return { data };
+    const { data: body } = await httpClient.post(`/${resource}`, params.data);
+    const record = body?.data ?? body;
+    return { data: record };
   },
 
   update: async (_resource, params) => {
-    const { data } = await httpClient.put(
+    const { data: body } = await httpClient.patch(
       `/${resource}/${params.id}`,
       params.data
     );
-    return { data };
+    const record = body?.data ?? body;
+    return { data: record };
   },
 
   updateMany: async (_resource, params) => {
     await Promise.all(
       params.ids.map((id) =>
-        httpClient.put(`/${resource}/${id}`, params.data)
+        httpClient.patch(`/${resource}/${id}`, params.data)
       )
     );
     return { data: params.ids };
   },
 
   delete: async (_resource, params) => {
-    const { data } = await httpClient.delete(`/${resource}/${params.id}`);
-    return { data };
+    const { data: body } = await httpClient.delete(`/${resource}/${params.id}`);
+    const record = body?.data ?? body ?? { id: params.id };
+    return { data: record };
   },
 
   deleteMany: async (_resource, params) => {
