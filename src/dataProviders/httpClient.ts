@@ -1,7 +1,7 @@
 import axios, { type AxiosResponseHeaders, type RawAxiosResponseHeaders } from "axios";
 import type { PaginationPayload, SortPayload } from "react-admin";
 
-export const API_URL = "http://localhost:3002";
+export const API_URL = "http://localhost:3000/api";
 
 export const httpClient = axios.create({
   baseURL: API_URL,
@@ -9,6 +9,18 @@ export const httpClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+httpClient.interceptors.request.use((config) => {
+  const raw = localStorage.getItem("auth");
+  if (raw) {
+    try {
+      const { token } = JSON.parse(raw);
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+    } catch {}
+  }
+  return config;
+});
+
 export const buildListQuery = (
   pagination: PaginationPayload | undefined,
   sort: SortPayload | undefined,
@@ -16,14 +28,10 @@ export const buildListQuery = (
 ) => {
   const page = pagination?.page ?? 1;
   const perPage = pagination?.perPage ?? 25;
-  const field = sort?.field ?? "id";
-  const order = sort?.order ?? "ASC";
 
   return {
-    _sort: field,
-    _order: order,
-    _start: (page - 1) * perPage,
-    _end: page * perPage,
+    page,
+    limit: perPage,
     ...filter,
   };
 };
